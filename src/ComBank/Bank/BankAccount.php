@@ -20,9 +20,11 @@ use ComBank\Transactions\Contracts\BankTransactionInterface;
 
 class BankAccount implements BankAccountInterface
 {
-    private $balance;
-    private $status;
-    private $overdraft;
+    protected $PersonHolder;
+    protected $balance;
+    protected $status;
+    protected $overdraft;
+    protected $currency;
 
     public function __construct($balance){
         $this->balance = $balance;
