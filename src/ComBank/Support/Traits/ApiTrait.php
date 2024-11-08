@@ -4,20 +4,19 @@ use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 
 trait ApiTrait{
-    public validateEmail(string $email):bool
+    public function validateEmail(string $email):bool
     {
-        echo $email;
         return true;
     }
 
-    public convertBalance(float $balance):float
+    public function convertBalance(float $balance):float
     {
+        $balance *= 1.20;
         return $balance;
     }
 
-    public detectFraud(new BankTransactionInterface $smth):bool
+    public function detectFraud(BankTransactionInterface $smth):bool
     {
-        echo $smth;
         return true;
     }
 }

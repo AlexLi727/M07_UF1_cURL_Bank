@@ -8,6 +8,7 @@
  */
 
 use ComBank\Bank\BankAccount;
+use ComBank\Bank\InternationalBankAccount;
 use ComBank\OverdraftStrategy\NoOverdraft;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Transactions\DepositTransaction;
@@ -21,6 +22,8 @@ require_once 'bootstrap.php';
 
 
 //---[Bank account 1]---/
+$bankAccountTest = new InternationalBankAccount(400);
+pl($bankAccountTest->getBalance());
 $bankAccount1 = new BankAccount(400);
 $bankAccount1->applyOverdraft(new NoOverdraft());
 pl('--------- [Start testing bank account #1, No overdraft] --------');
