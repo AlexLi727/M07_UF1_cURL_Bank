@@ -2,9 +2,12 @@
 
 use ComBank\Bank\BankAccount;
 use ComBank\OverdraftStrategy\NoOverdraft;
+use ComBank\Support\Traits\ApiTrait;
+
 
 class InternationalBankAccount extends BankAccount
 {
+    use ApiTrait;
 
     public function __construct($balance, $name, $IdCard, $email){
         $this->balance = $balance;
@@ -13,10 +16,13 @@ class InternationalBankAccount extends BankAccount
         $this->currency = "USD";
         $this->PersonHolder = new Person($name, $IdCard, $email);
     }
-
+    
     public function getConvertedBalance():float
     {
-        return $this->balance * 1.10;
+        
+        parent::c();
+        
+        return convertBalance();
     }
 
     public function getConvertedCurrency():string

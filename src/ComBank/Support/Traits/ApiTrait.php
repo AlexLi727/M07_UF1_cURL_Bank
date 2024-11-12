@@ -1,4 +1,4 @@
-<?php namespace ComBank\ApiTrait;
+<?php namespace ComBank\Support\Traits;
 
 use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
@@ -11,7 +11,12 @@ trait ApiTrait{
 
     public function convertBalance(float $balance):float
     {
-        $balance *= 1.20;
+        $ch = curl_init();
+        $url = 'https://api.vatcomply.com/rates';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $value = curl_exec($ch);
+        curl_close($ch);
+        $balance *= $value["USD"];
         return $balance;
     }
 
