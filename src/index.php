@@ -22,7 +22,7 @@ require_once 'bootstrap.php';
 
 
 //---[Bank account 1]---/
-$bankAccountTest = new InternationalBankAccount(400, "Alex", "1", "smth@gmail.com");
+$bankAccountTest = new InternationalBankAccount(400, "Alex", "1", "cookiezi@gmail.com");
 pl($bankAccountTest->getConvertedBalance());
 $bankAccount1 = new BankAccount(400);
 $bankAccount1->applyOverdraft(new NoOverdraft());
