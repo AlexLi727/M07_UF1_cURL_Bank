@@ -42,6 +42,12 @@ trait ApiTrait{
 
     public function detectFraud(BankTransactionInterface $smth):bool
     {
+        $ch = curl_init();
+        $url = 'https://67377c97aafa2ef22233ff1a.mockapi.io/Fraude';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $value = json_decode(curl_exec($ch), true);
+        echo '<pre>' , var_dump($value) , '</pre>';
         return true;
     }
 }
