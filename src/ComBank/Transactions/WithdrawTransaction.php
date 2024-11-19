@@ -8,11 +8,13 @@
  */
 
 use ComBank\Bank\Contracts\BankAccountInterface;
+use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\OverdraftStrategy\NoOverdraft;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
+use ComBank\Support\Traits\ApiTrait;
 
 class WithdrawTransaction extends BaseTransaction implements BankTransactionInterface
 {
@@ -20,7 +22,12 @@ class WithdrawTransaction extends BaseTransaction implements BankTransactionInte
         $newBalance = $account->getBalance() - $this->amount;
 
         if ($account->getOverdraft()->isGrantOverdraftFunds($newBalance)) {
-            return $newBalance;
+            if($this->detectFraud(new DepositTransaction($this->amount))){
+                return $newBalance;
+            }
+            else{
+                pl("Risk detected in transaction");
+            }  
         }
         if($account->getOverdraft() == new NoOverdraft){
             throw new InvalidOverdraftFundsException('Withdrawing below 0 is not allowed');

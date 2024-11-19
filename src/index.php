@@ -25,6 +25,7 @@ require_once 'bootstrap.php';
 $bankAccountTest = new InternationalBankAccount(400, "Alex", "1", "cookiezi@gmail.com");
 
 pl($bankAccountTest->getConvertedBalance());
+$bankAccountTest->transaction(new DepositTransaction(5000000));
 $bankAccount1 = new BankAccount(400);
 $bankAccount1->applyOverdraft(new NoOverdraft());
 pl('--------- [Start testing bank account #1, No overdraft] --------');

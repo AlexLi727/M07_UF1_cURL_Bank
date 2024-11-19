@@ -27,6 +27,8 @@ class BankAccount implements BankAccountInterface
     protected $overdraft;
     protected $currency;
 
+    use ApiTrait;
+
     public function __construct($balance){
         $this->balance = $balance;
         $this->status = true;
@@ -37,6 +39,7 @@ class BankAccount implements BankAccountInterface
         if($this->status == true){
             $newAmount = $transaction->applyTransaction($this);
             $this->setBalance($newAmount);
+            $this->detectFraud($transaction);
         }else{
             throw new BankAccountException("Bank account is closed");
         }
