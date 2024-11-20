@@ -9,16 +9,9 @@ class InternationalBankAccount extends BankAccount
 {
     use ApiTrait;
 
-    public function __construct($balance, $name, $IdCard, $email, $password){
-        if($this->validateEmail($email)){
-        $this->balance = $balance;
-        $this->status = true;
-        $this->overdraft = new NoOverdraft();
+    public function __construct($balance, $name, $IdCard, $email){
+        parent::__construct($balance, $name, $IdCard, $email);
         $this->currency = "USD";
-        $this->PersonHolder = new Person($name, $IdCard, $email, $password);
-        }else{
-            echo "Not valid email";
-        }
     }
     
     public function getConvertedBalance():float

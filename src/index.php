@@ -9,6 +9,7 @@
 
 use ComBank\Bank\BankAccount;
 use ComBank\Bank\InternationalBankAccount;
+use ComBank\Bank\NationalBankAccount;
 use ComBank\OverdraftStrategy\NoOverdraft;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Transactions\DepositTransaction;
@@ -20,13 +21,65 @@ use ComBank\Exceptions\ZeroAmountException;
 
 require_once 'bootstrap.php';
 
+pl('--------- Start testing national account (No conversion) --------');
+$bankAccountTest = new NationalBankAccount(500, "Alex", "1", "cookiezi@gmail.com");
+pl("My balance: ". $bankAccountTest->getBalance(). " €");
+
+pl('--------- Start testing international account (Dollar conversion) --------');
+$bankAccountInternational1 = new InternationalBankAccount(300, "Alex", "1", "cookiezi@gmail.com");
+pl("My balance: ". $bankAccountInternational1->getBalance(). " €");
+pl("Converting balance to Dollars");
+pl("Converted balance: ". $bankAccountInternational1->getConvertedBalance(). $bankAccountInternational1->getConvertedCurrency());
+
+pl('--------- Start testing national account --------');
+$emailTest = "cookiezi@gmail.com";
+pl("Validating email: $emailTest");
+$bankAccountNational2 = new NationalBankAccount(500, "Alex", "1", $emailTest);
+if($bankAccountNational2){
+    pl("Email is valid");
+}
+
+// pl('--------- Start testing international account --------');
+// $emailTest2 = "AlexAlabau@correofalso.com";
+// pl("Validating email: $emailTest2");
+// $bankAccountNational2 = new NationalBankAccount(500, "Alex", "1", $emailTest2);
+// if(empty($bankAccountNational2)){
+//     pl("Email is valid");
+// }
+
+pl('--------- Risk / Amount test --------');
+try{
+    pl('Doing transaction deposit (+10000) with current balance ' .  $bankAccountNational2->getBalance());
+    $bankAccountNational2->transaction(new DepositTransaction(10000));
+    pl('My new balance after deposit (+10000) : ' . $bankAccountNational2->getBalance());
+    
+    pl('Doing transaction deposit (+25000) with current balance ' .  $bankAccountNational2->getBalance());
+    $bankAccountNational2->transaction(new DepositTransaction(25000));
+    pl('My new balance after deposit (+25000) : ' . $bankAccountNational2->getBalance());
+}catch(BankAccountException $e){
+    pl($e->getMessage());
+}
+
+try{
+    pl('Doing transaction withdraw (+1500) with current balance ' .  $bankAccountNational2->getBalance());
+    $bankAccountNational2->transaction(new WithdrawTransaction(1500));
+    pl('My new balance after withdraw (+1500) : ' . $bankAccountNational2->getBalance());
+    
+    pl('Doing transaction withdraw (+7500) with current balance ' .  $bankAccountNational2->getBalance());
+    $bankAccountNational2->transaction(new WithdrawTransaction(7500));
+    pl('My new balance after withdraw (+7500) : ' . $bankAccountNational2->getBalance());
+}catch(BankAccountException $e){
+    pl($e->getMessage());
+}
+
+pl('--------- Free function --------');
+
 
 //---[Bank account 1]---/
-$bankAccountTest = new InternationalBankAccount(400, "Alex", "1", "cookiezi@gmail.com", "prueba");
 
-pl($bankAccountTest->getConvertedBalance());
-$bankAccountTest->transaction(new DepositTransaction(5000000));
-$bankAccount1 = new BankAccount(400);
+
+
+$bankAccountNational2 = new BankAccount(400, "Alex", "1", "cookiezi@gmail.com");
 $bankAccount1->applyOverdraft(new NoOverdraft());
 pl('--------- [Start testing bank account #1, No overdraft] --------');
 try {

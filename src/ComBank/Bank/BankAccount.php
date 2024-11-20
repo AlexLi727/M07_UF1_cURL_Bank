@@ -29,17 +29,19 @@ class BankAccount implements BankAccountInterface
 
     use ApiTrait;
 
-    public function __construct($balance){
-        $this->balance = $balance;
-        $this->status = true;
-        $this->overdraft = new NoOverdraft();
+    public function __construct($balance, $name, $IdCard, $email){
+        
+            $this->balance = $balance;
+            $this->status = true;
+            $this->overdraft = new NoOverdraft();
+            $this->PersonHolder = new Person($name, $IdCard, $email);
+            
     }
 
     public function transaction(BankTransactionInterface $transaction){
         if($this->status == true){
             $newAmount = $transaction->applyTransaction($this);
             $this->setBalance($newAmount);
-            $this->detectFraud($transaction);
         }else{
             throw new BankAccountException("Bank account is closed");
         }

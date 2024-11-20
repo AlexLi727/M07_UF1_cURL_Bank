@@ -10,16 +10,18 @@
 use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Exceptions\BankAccountException;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
+use ComBank\Bank\Person;
 use ComBank\Support\Traits\ApiTrait;
 
 class DepositTransaction extends BaseTransaction implements BankTransactionInterface
 {
     public function applyTransaction(BankAccountInterface $account):float{
-        if($this->detectFraud(new DepositTransaction($this->amount))){
+        
+        if($this->detectFraud($this)){
             return $account->getBalance() + $this->amount;
         }  
         else{
-            pl("Risk detected in transaction");
+            throw new BankAccountException("Risk in transaction detected");
         }
     }
 

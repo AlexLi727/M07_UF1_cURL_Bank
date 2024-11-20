@@ -50,17 +50,20 @@ trait ApiTrait{
         // echo '<pre>' , var_dump($value) , '</pre>';
         $allow = true;
         $risk = 0;
+        
         foreach($value as $a => $b){
             if($smth->getTransactionInfo() == "DEPOSIT_TRANSACTION"){
                 if($smth->getAmount() >= $value[$a]["Balance"] && $value[$a]["Transaction"] == "Deposit"){
                     $allow = $value[$a]["Allow"];
                     $risk = $value[$a]["Risk"];
                     break;
-                }else if($smth->getAmount() >= $value[$a]["Balance"] && $value[$a]["Transaction"] == "Withdraw"){
+                } 
+            }else{
+                if($smth->getAmount() >= $value[$a]["Balance"] && $value[$a]["Transaction"] == "Withdraw"){
                     $allow = $value[$a]["Allow"];
                     $risk = $value[$a]["Risk"];
                     break;
-                }   
+                } 
             } 
         }
         pl("Transaction Risk Score: ". $risk);
@@ -73,19 +76,15 @@ trait ApiTrait{
         return $allow;
     }
 
-    public function validatePassword(string $password){
-        $post = [
-            "password" => "megustanlasgalletas",
-        ];
+    public function createPassword():string{
+        
         $ch = curl_init();
-        $url = "https://test.stytch.com/v1/passwords/strength_check";
+        $url = "https://api.genratr.com/?length=16&uppercase&lowercase&numbers";
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query($post));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         
         $value = json_decode(curl_exec($ch), true);
-        echo '<pre>' , var_dump($value) , '</pre>';
 
+        return $value["password"];
     }
 }

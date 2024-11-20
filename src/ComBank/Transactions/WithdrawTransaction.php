@@ -22,11 +22,11 @@ class WithdrawTransaction extends BaseTransaction implements BankTransactionInte
         $newBalance = $account->getBalance() - $this->amount;
 
         if ($account->getOverdraft()->isGrantOverdraftFunds($newBalance)) {
-            if($this->detectFraud(new DepositTransaction($this->amount))){
+            if($this->detectFraud($this)){
                 return $newBalance;
             }
             else{
-                pl("Risk detected in transaction");
+                throw new BankAccountException("Risk in transaction detected");
             }  
         }
         if($account->getOverdraft() == new NoOverdraft){
