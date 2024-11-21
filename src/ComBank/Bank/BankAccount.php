@@ -28,9 +28,10 @@ class BankAccount implements BankAccountInterface
     protected $currency;
 
     use ApiTrait;
+    use AmountValidationTrait;
 
     public function __construct($balance){
-        
+            $this->validateAmount($balance);
             $this->balance = $balance;
             $this->status = true;
             $this->overdraft = new NoOverdraft();    

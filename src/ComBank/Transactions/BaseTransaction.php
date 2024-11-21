@@ -20,8 +20,11 @@ abstract class BaseTransaction
     use ApiTrait;
 
     public function __construct($amount){
-        $this->amount = $amount;
-        
         $this->validateAmount($amount);
+        $this->amount = $amount;
+    }
+
+    public function getAmount():float{
+        return $this->amount;
     }
 }
