@@ -9,8 +9,8 @@ class InternationalBankAccount extends BankAccount
 {
     use ApiTrait;
 
-    public function __construct($balance, $name, $IdCard, $email){
-        parent::__construct($balance, $name, $IdCard, $email);
+    public function __construct($balance){
+        parent::__construct($balance);
         $this->currency = "USD";
     }
     

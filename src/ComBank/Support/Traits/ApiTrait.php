@@ -3,7 +3,9 @@
 use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 
+
 trait ApiTrait{
+    
     public function validateEmail(string $email):bool
     {
         $ch = curl_init();
@@ -31,12 +33,10 @@ trait ApiTrait{
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $value = json_decode(curl_exec($ch), true);
-        // var_dump($value);
-        // echo '<pre>' , var_dump($value) , '</pre>';
         
         $newValue = $balance * $value["rates"]["USD"];
-        
         curl_close($ch);
+
         return $newValue;
     }
 
@@ -47,7 +47,7 @@ trait ApiTrait{
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $value = json_decode(curl_exec($ch), true);
-        // echo '<pre>' , var_dump($value) , '</pre>';
+        curl_close($ch);
         $allow = true;
         $risk = 0;
         
@@ -66,7 +66,7 @@ trait ApiTrait{
                 } 
             } 
         }
-        pl("Transaction Risk Score: ". $risk);
+        echo ("<br> Transaction Risk Score: ". $risk. "<br>");
         echo ("<br> Transaction Fraud Detect Result: ");
         if($allow)
             echo "Allowed <br>";
@@ -77,13 +77,13 @@ trait ApiTrait{
     }
 
     public function createPassword():string{
-        
         $ch = curl_init();
         $url = "https://api.genratr.com/?length=16&uppercase&lowercase&numbers";
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         
         $value = json_decode(curl_exec($ch), true);
+        curl_close($ch);
 
         return $value["password"];
     }

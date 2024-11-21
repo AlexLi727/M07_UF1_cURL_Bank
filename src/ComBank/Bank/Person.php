@@ -9,7 +9,6 @@ class Person{
     private $name;
     private $IdCard;
     private $email;
-
     private $password;
 
     public function __construct($name, $IdCard, $email){
@@ -26,25 +25,11 @@ class Person{
     public function setPassword(string $oldPassword, string $newPassword){
         if($oldPassword == $this->password){
             $this->password = $newPassword;
-        }
-    }
-
-    public function setEmail(string $password, string $newEmail){
-        if($password == $this->password && $this->validateEmail($newEmail)){
-            $this->email = $newEmail;
         }else{
-            throw new BankAccountException("Incorrect Email");
+            throw new BankAccountException("Incorrect old password");
         }
     }
-
-    public function setName(string $password, string $newName){
-        if($password == $this->password){
-            $this->name = $newName;
-        }else{
-            throw new BankAccountException("Incorrect Email");
-        }
-    }
-
+    
     public function getPassword(){
         return $this->password;
     }

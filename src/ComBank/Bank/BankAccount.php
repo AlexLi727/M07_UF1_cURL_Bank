@@ -29,13 +29,11 @@ class BankAccount implements BankAccountInterface
 
     use ApiTrait;
 
-    public function __construct($balance, $name, $IdCard, $email){
+    public function __construct($balance){
         
             $this->balance = $balance;
             $this->status = true;
-            $this->overdraft = new NoOverdraft();
-            $this->PersonHolder = new Person($name, $IdCard, $email);
-            
+            $this->overdraft = new NoOverdraft();    
     }
 
     public function transaction(BankTransactionInterface $transaction){
@@ -81,5 +79,13 @@ class BankAccount implements BankAccountInterface
 
     public function setBalance(float $amount){
         $this->balance = $amount;
+    }
+
+    public function getPerson(){
+        return $this->PersonHolder;
+    }
+
+    public function setPerson(Person $person){
+        $this->PersonHolder = $person;
     }
     }
